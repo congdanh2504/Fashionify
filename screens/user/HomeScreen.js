@@ -39,7 +39,8 @@ const HomeScreen = ({ navigation, route }) => {
   const { user } = route.params;
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([]);
-  const [refeshing, setRefreshing] = useState(false);
+  const [recommendProduct, setRecommendProduct] = useState([])
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
   const [userInfo, setUserInfo] = useState({});
   const [searchItems, setSearchItems] = useState([]);
@@ -101,6 +102,31 @@ const HomeScreen = ({ navigation, route }) => {
       });
   };
 
+  const fetchRecommendProducts = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("x-auth-token", user.token);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    fetch(`${network.serverip}/recommend-products`, requestOptions) //API call
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          setRecommendProduct(result.data);
+          setError("");
+        } else {
+          setError(result.message);
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log("error", error);
+      });
+  };
+
   //method call on pull refresh
   const handleOnRefresh = () => {
     setRefreshing(true);
@@ -113,6 +139,7 @@ const HomeScreen = ({ navigation, route }) => {
     convertToJSON(user);
     fetchProduct();
     fetchCategories();
+    fetchRecommendProducts();
   }, []);
 
   return (
@@ -240,14 +267,14 @@ const HomeScreen = ({ navigation, route }) => {
               <FlatList
                 refreshControl={
                   <RefreshControl
-                    refreshing={refeshing}
+                    refreshing={refreshing}
                     onRefresh={handleOnRefresh}
                   />
                 }
                 showsHorizontalScrollIndicator={false}
-                initialNumToRender={5}
+                initialNumToRender={4}
                 horizontal={true}
-                data={products.slice(0, 4)}
+                data={recommendProduct}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item, index }) => (
                   <View

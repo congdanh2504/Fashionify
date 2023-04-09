@@ -177,7 +177,6 @@ const AddProductScreen = ({ navigation, route }) => {
       fetch(network.serverip + "/product", requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
           if (result.success == true) {
             setIsloading(false);
             setAlertType("success");
@@ -196,7 +195,6 @@ const AddProductScreen = ({ navigation, route }) => {
   //call the fetch functions initial render
   useEffect(() => {
     fetchCategories();
-    console.log(categories);
   }, []);
 
   return (
