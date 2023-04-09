@@ -174,12 +174,12 @@ const CheckoutScreen = ({ navigation, route }) => {
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Email</Text>
             <Text style={styles.secondaryTextSm}>
-              bukhtyar.haider1@gmail.com
+              tcdanh.it1@vku.udn.vn
             </Text>
           </View>
           <View style={styles.list}>
             <Text style={styles.secondaryTextSm}>Phone</Text>
-            <Text style={styles.secondaryTextSm}>+92 3410988683</Text>
+            <Text style={styles.secondaryTextSm}>+84 913475953</Text>
           </View>
         </View>
         <Text style={styles.primaryText}>Address</Text>
@@ -273,7 +273,7 @@ const CheckoutScreen = ({ navigation, route }) => {
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
-                text={"close"}
+                text={"Close"}
               />
             )}
           </View>

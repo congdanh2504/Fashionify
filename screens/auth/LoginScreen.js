@@ -119,7 +119,7 @@ const LoginScreen = ({ navigation }) => {
             <View>
               <Text style={styles.welcomeText}>Welcome to Fashionify</Text>
               <Text style={styles.welcomeParagraph}>
-                make your ecommerce easy
+                Make your ecommerce easy
               </Text>
             </View>
             <View>

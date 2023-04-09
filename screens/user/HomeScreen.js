@@ -25,8 +25,9 @@ import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
 
 const slides = [
-  require("../../assets/image/banners/banner.png"),
-  require("../../assets/image/banners/banner.png"),
+  require("../../assets/image/banners/banner.jpg"),
+  require("../../assets/image/banners/banner2.jpg"),
+  require("../../assets/image/banners/banner3.jpg")
 ];
 
 const HomeScreen = ({ navigation, route }) => {
@@ -226,7 +227,7 @@ const HomeScreen = ({ navigation, route }) => {
             <View style={styles.emptyView}></View>
           </View>
           <View style={styles.primaryTextContainer}>
-            <Text style={styles.primaryText}>New Arrivals</Text>
+            <Text style={styles.primaryText}>For you</Text>
           </View>
           {products.length === 0 ? (
             <View style={styles.productCardContainerEmpty}>
@@ -381,7 +382,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   promotiomSliderContainer: {
-    margin: 5,
+    marginVertical: 5,
     height: 140,
     backgroundColor: colors.light,
   },
