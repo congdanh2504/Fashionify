@@ -17,9 +17,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MyOrderScreen = ({ navigation, route }) => {
   const { user } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState("Please wait...");
-  const [refeshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
   const [error, setError] = useState("");
   const [orders, setOrders] = useState([]);
@@ -77,8 +77,8 @@ const MyOrderScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    setIsloading(true);
-    fetch(`${network.serverip}/orders`, requestOptions)
+    setIsLoading(true);
+    fetch(`${network.serverIP}/orders`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result?.err === "jwt expired") {
@@ -88,10 +88,10 @@ const MyOrderScreen = ({ navigation, route }) => {
           setOrders(result.data);
           setError("");
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -106,7 +106,7 @@ const MyOrderScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <View style={styles.topBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -147,7 +147,7 @@ const MyOrderScreen = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={refeshing}
+              refreshing={refreshing}
               onRefresh={handleOnRefresh}
             />
           }
@@ -173,7 +173,7 @@ export default MyOrderScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",

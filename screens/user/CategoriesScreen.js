@@ -27,7 +27,7 @@ const CategoriesScreen = ({ navigation, route }) => {
   const [categories, setCategories] = useState([])
   const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  const [refeshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
   const [foundItems, setFoundItems] = useState([]);
@@ -68,7 +68,7 @@ const CategoriesScreen = ({ navigation, route }) => {
   };
 
   const fetchCategories = () => {
-    fetch(`${network.serverip}/categories`, headerOptions)
+    fetch(`${network.serverIP}/categories`, headerOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -85,7 +85,7 @@ const CategoriesScreen = ({ navigation, route }) => {
       method: "GET",
       redirect: "follow",
     };
-    fetch(`${network.serverip}/products`, headerOptions)
+    fetch(`${network.serverIP}/products`, headerOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -225,7 +225,7 @@ const CategoriesScreen = ({ navigation, route }) => {
             )}
             refreshControl={
               <RefreshControl
-                refreshing={refeshing}
+                refreshing={refreshing}
                 onRefresh={handleOnRefresh}
               />
             }
@@ -263,7 +263,7 @@ export default CategoriesScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
 
     justifyContent: "flex-start",

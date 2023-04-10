@@ -46,7 +46,7 @@ const MyAccountScreen = ({ navigation, route }) => {
 
   //method to delete the account using API call
   const DeleteAccontHandle = (userID) => {
-    let fetchURL = network.serverip + "/delete-user?id=" + String(userID);
+    let fetchURL = network.serverIP + "/delete-user?id=" + String(userID);
     console.log(fetchURL);
     fetch(fetchURL, requestOptions)
       .then((response) => response.json())
@@ -115,7 +115,7 @@ export default MyAccountScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",

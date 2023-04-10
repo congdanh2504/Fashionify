@@ -22,7 +22,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 const AddProductScreen = ({ navigation, route }) => {
   const { authUser } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [sku, setSku] = useState("");
@@ -66,8 +66,8 @@ const AddProductScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    setIsloading(true);
-    fetch(`${network.serverip}/categories`, requestOptions)
+    setIsLoading(true);
+    fetch(`${network.serverIP}/categories`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -84,10 +84,10 @@ const AddProductScreen = ({ navigation, route }) => {
         } else {
           setError(result.message);
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -112,7 +112,7 @@ const AddProductScreen = ({ navigation, route }) => {
     };
 
     fetch(
-      `http://10.0.2.2:3000/photos/upload`,
+      `${network.serverIP}/photos/upload`,
       ImageRequestOptions
     )
       .then((response) => response.json())
@@ -157,34 +157,34 @@ const AddProductScreen = ({ navigation, route }) => {
 
   //Method for imput validation and post data to server to insert product using API call
   const addProductHandle = () => {
-    setIsloading(true);
+    setIsLoading(true);
 
     //[check validation] -- Start
     if (title == "") {
       setError("Please enter the product title");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (price == 0) {
       setError("Please enter the product price");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (quantity <= 0) {
       setError("Quantity must be greater then 1");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (imageURL == "") {
       setError("Please upload the product image");
-      setIsloading(false);
+      setIsLoading(false);
     } else {
       //[check validation] -- End
-      fetch(network.serverip + "/product", requestOptions)
+      fetch(network.serverIP + "/product", requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result.success == true) {
-            setIsloading(false);
+            setIsLoading(false);
             setAlertType("success");
             setError(result.message);
           }
         })
         .catch((error) => {
-          setIsloading(false);
+          setIsLoading(false);
           setError(error.message);
           setAlertType("error");
           console.log("error", error);
@@ -200,7 +200,7 @@ const AddProductScreen = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Adding ..."} />
+      <ProgressDialog visible={isLoading} label={"Adding ..."} />
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -310,7 +310,7 @@ export default AddProductScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

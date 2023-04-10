@@ -38,7 +38,7 @@ const UpdatePasswordScreen = ({ navigation, route }) => {
     } else {
       setError("");
       fetch(
-        network.serverip + "/reset-password?id=" + String(userID),
+        network.serverIP + "/reset-password?id=" + String(userID),
         requestOptions
       ) // API call
         .then((response) => response.json())
@@ -113,7 +113,7 @@ export default UpdatePasswordScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     padding: 20,
@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
   },
 });

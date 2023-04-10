@@ -20,7 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const EditCategoryScreen = ({ navigation, route }) => {
   const { category, authUser } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState();
   const [description, setDescription] = useState("");
@@ -47,24 +47,24 @@ const EditCategoryScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    setIsloading(true);
+    setIsLoading(true);
     //[check validations] -- Start
     if (title == "") {
       setError("Please enter the product title");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (description == "") {
       setError("Please upload the product image");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (image == null) {
       setError("Please upload the Catergory image");
-      setIsloading(false);
+      setIsLoading(false);
     } else {
       //[check validations] -- End
-      fetch(`${network.serverip}/update-category?id=${id}`, requestOptions)
+      fetch(`${network.serverIP}/update-category?id=${id}`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
           if (result.success == true) {
-            setIsloading(false);
+            setIsLoading(false);
             setAlertType("success");
             setError(result.message);
             setTitle(result.data.title);
@@ -72,7 +72,7 @@ const EditCategoryScreen = ({ navigation, route }) => {
           }
         })
         .catch((error) => {
-          setIsloading(false);
+          setIsLoading(false);
           setError(error.message);
           setAlertType("error");
           console.log("error", error);
@@ -89,7 +89,7 @@ const EditCategoryScreen = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Adding ..."} />
+      <ProgressDialog visible={isLoading} label={"Adding ..."} />
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -152,7 +152,7 @@ export default EditCategoryScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

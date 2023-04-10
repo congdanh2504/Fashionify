@@ -19,8 +19,8 @@ import ProgressDialog from "react-native-progress-dialog";
 
 const ViewProductScreen = ({ navigation, route }) => {
   const { authUser } = route.params;
-  const [isloading, setIsloading] = useState(false);
-  const [refeshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
 
   const [label, setLabel] = useState("Loading...");
@@ -52,9 +52,9 @@ const ViewProductScreen = ({ navigation, route }) => {
 
   //method to delete the specific order
   const handleDelete = (id) => {
-    setIsloading(true);
-    console.log(`${network.serverip}/delete-product?id=${id}`);
-    fetch(`${network.serverip}/delete-product?id=${id}`, requestOptions)
+    setIsLoading(true);
+    console.log(`${network.serverIP}/delete-product?id=${id}`);
+    fetch(`${network.serverIP}/delete-product?id=${id}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -65,10 +65,10 @@ const ViewProductScreen = ({ navigation, route }) => {
           setError(result.message);
           setAlertType("error");
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -95,24 +95,24 @@ const ViewProductScreen = ({ navigation, route }) => {
 
   //method the fetch the product data from server using API call
   const fetchProduct = () => {
-    setIsloading(true);
-    fetch(`${network.serverip}/products`, ProductListRequestOptions)
+    setIsLoading(true);
+    fetch(`${network.serverIP}/products`, ProductListRequestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
           setProducts(result.data);
           setFoundItems(result.data);
           setError("");
-          setIsloading(false);
+          setIsLoading(false);
         } else {
           setError(result.message);
-          setIsloading(false);
+          setIsLoading(false);
         }
       })
       .catch((error) => {
         setError(error.message);
         console.log("error", error);
-        setIsloading(false);
+        setIsLoading(false);
       });
   };
 
@@ -141,7 +141,7 @@ const ViewProductScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -182,7 +182,7 @@ const ViewProductScreen = ({ navigation, route }) => {
         style={{ flex: 1, width: "100%" }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
         }
       >
         {foundItems && foundItems.length == 0 ? (
@@ -222,7 +222,7 @@ export default ViewProductScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

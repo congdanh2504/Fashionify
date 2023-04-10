@@ -17,9 +17,9 @@ import WishList from "../../components/WishList/WishList";
 
 const MyWishlistScreen = ({ navigation, route }) => {
   const { user } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState("Please wait...");
-  const [refeshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
   const [error, setError] = useState("");
   const [wishlist, setWishlist] = useState([]);
@@ -53,8 +53,8 @@ const MyWishlistScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    setIsloading(true);
-    fetch(`${network.serverip}/wishlist`, requestOptions) // API call
+    setIsLoading(true);
+    fetch(`${network.serverIP}/wishlist`, requestOptions) // API call
       .then((response) => response.json())
       .then((result) => {
         //check if the token is expired
@@ -65,10 +65,10 @@ const MyWishlistScreen = ({ navigation, route }) => {
           setWishlist(result.data[0].wishlist);
           setError("");
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -85,7 +85,7 @@ const MyWishlistScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    fetch(`${network.serverip}/remove-from-wishlist?id=${id}`, requestOptions)
+    fetch(`${network.serverIP}/remove-from-wishlist?id=${id}`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -118,7 +118,7 @@ const MyWishlistScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <View style={styles.topBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -159,7 +159,7 @@ const MyWishlistScreen = ({ navigation, route }) => {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={refeshing}
+              refreshing={refreshing}
               onRefresh={handleOnRefresh}
             />
           }
@@ -190,7 +190,7 @@ export default MyWishlistScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",

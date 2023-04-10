@@ -17,7 +17,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 const ViewOrderDetailScreen = ({ navigation, route }) => {
   const { orderDetail, Token } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState("Loading..");
   const [error, setError] = useState("");
   const [alertType, setAlertType] = useState("error");
@@ -62,7 +62,7 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
 
   //method to update the status using API call
   const handleUpdateStatus = (id) => {
-    setIsloading(true);
+    setIsLoading(true);
     setError("");
     setAlertType("error");
     var myHeaders = new Headers();
@@ -74,11 +74,11 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
     console.log(
-      `Link:${network.serverip}/admin/order-status?orderId=${id}&status=${value}`
+      `Link:${network.serverIP}/admin/order-status?orderId=${id}&status=${value}`
     );
 
     fetch(
-      `${network.serverip}/admin/order-status?orderId=${id}&status=${value}`,
+      `${network.serverIP}/admin/order-status?orderId=${id}&status=${value}`,
       requestOptions
     ) //API call
       .then((response) => response.json())
@@ -86,14 +86,14 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
         if (result.success == true) {
           setError(`Order status is successfully updated to ${value}`);
           setAlertType("success");
-          setIsloading(false);
+          setIsLoading(false);
         }
       })
       .catch((error) => {
         setAlertType("error");
         setError(error);
         console.log("error", error);
-        setIsloading(false);
+        setIsLoading(false);
       });
   };
 
@@ -122,7 +122,7 @@ const ViewOrderDetailScreen = ({ navigation, route }) => {
   }, []);
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -261,7 +261,7 @@ export default ViewOrderDetailScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",

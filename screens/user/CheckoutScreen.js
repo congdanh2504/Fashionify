@@ -21,7 +21,7 @@ import ProgressDialog from "react-native-progress-dialog";
 
 const CheckoutScreen = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const cartproduct = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const { emptyCart } = bindActionCreators(actionCreaters, dispatch);
@@ -42,7 +42,7 @@ const CheckoutScreen = ({ navigation, route }) => {
 
   //method to handle checkout
   const handleCheckout = async () => {
-    setIsloading(true);
+    setIsLoading(true);
     var myHeaders = new Headers();
     const value = await AsyncStorage.getItem("authUser");
     let user = JSON.parse(value);
@@ -84,22 +84,22 @@ const CheckoutScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    fetch(network.serverip + "/checkout", requestOptions) //API call
+    fetch(network.serverIP + "/checkout", requestOptions) //API call
       .then((response) => response.json())
       .then((result) => {
         console.log("Checkout=>", result);
         if (result.err === "jwt expired") {
-          setIsloading(false);
+          setIsLoading(false);
           logout();
         }
         if (result.success == true) {
-          setIsloading(false);
+          setIsLoading(false);
           emptyCart("empty");
           navigation.replace("orderconfirm");
         }
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         console.log("error", error);
       });
   };
@@ -121,7 +121,7 @@ const CheckoutScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Placing Order..."} />
+      <ProgressDialog visible={isLoading} label={"Placing Order..."} />
       <View style={styles.topBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -288,7 +288,7 @@ export default CheckoutScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",

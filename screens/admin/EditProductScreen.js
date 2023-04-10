@@ -20,7 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const EditProductScreen = ({ navigation, route }) => {
   const { product, authUser } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState("Updating...");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -69,28 +69,28 @@ const EditProductScreen = ({ navigation, route }) => {
 
   //Method for imput validation and post data to server to edit product using API call
   const editProductHandle = () => {
-    setIsloading(true);
+    setIsLoading(true);
     if (title == "") {
       setError("Please enter the product title");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (price == 0) {
       setError("Please enter the product price");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (quantity <= 0) {
       setError("Quantity must be greater then 1");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (image == null) {
       setError("Please upload the product image");
-      setIsloading(false);
+      setIsLoading(false);
     } else {
       fetch(
-        `${network.serverip}/update-product?id=${product._id}`,
+        `${network.serverIP}/update-product?id=${product._id}`,
         requestOptions
       )
         .then((response) => response.json())
         .then((result) => {
           if (result.success == true) {
-            setIsloading(false);
+            setIsLoading(false);
             setError(result.message);
             setPrice("");
             setQuantity("");
@@ -99,7 +99,7 @@ const EditProductScreen = ({ navigation, route }) => {
           }
         })
         .catch((error) => {
-          setIsloading(false);
+          setIsLoading(false);
           setError(error.message);
           console.log("error", error);
         });
@@ -108,7 +108,7 @@ const EditProductScreen = ({ navigation, route }) => {
 
   // set all the input fields and image on initial render
   useEffect(() => {
-    setImage(`${network.serverip}/uploads/${product?.image}`);
+    setImage(`${network.serverIP}/uploads/${product?.image}`);
     setTitle(product.title);
     setSku(product.sku);
     setQuantity(product.quantity.toString());
@@ -119,7 +119,7 @@ const EditProductScreen = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -209,7 +209,7 @@ export default EditProductScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

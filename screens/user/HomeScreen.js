@@ -20,7 +20,7 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import { network } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actionCreaters from "../../states/actionCreaters/actionCreaters";
+import * as actionCreators from "../../states/actionCreaters/actionCreaters";
 import SearchableDropdown from "react-native-searchable-dropdown";
 import { SliderBox } from "react-native-image-slider-box";
 
@@ -31,28 +31,17 @@ const slides = [
 ];
 
 const HomeScreen = ({ navigation, route }) => {
-  const cartproduct = useSelector((state) => state.product);
+  const cartProduct = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
-  const { addCartItem } = bindActionCreators(actionCreaters, dispatch);
+  const { addCartItem } = bindActionCreators(actionCreators, dispatch);
 
   const { user } = route.params;
   const [categories, setCategories] = useState([])
-  const [products, setProducts] = useState([]);
   const [recommendProduct, setRecommendProduct] = useState([])
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
-  const [userInfo, setUserInfo] = useState({});
   const [searchItems, setSearchItems] = useState([]);
-
-  //method to convert the authUser to json object
-  const convertToJSON = (obj) => {
-    try {
-      setUserInfo(JSON.parse(obj));
-    } catch (e) {
-      setUserInfo(obj);
-    }
-  };
 
   //method to navigate to product detail screen of a specific product
   const handleProductPress = (product) => {
@@ -70,7 +59,7 @@ const HomeScreen = ({ navigation, route }) => {
   };
 
   const fetchCategories = () => {
-    fetch(`${network.serverip}/categories`, headerOptions)
+    fetch(`${network.serverIP}/categories`, headerOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -80,11 +69,10 @@ const HomeScreen = ({ navigation, route }) => {
   }
 
   const fetchProduct = () => {
-    fetch(`${network.serverip}/products`, headerOptions) //API call
+    fetch(`${network.serverIP}/products`, headerOptions) //API call
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
-          setProducts(result.data);
           setError("");
           let payload = [];
           result.data.forEach((cat, index) => {
@@ -111,7 +99,7 @@ const HomeScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    fetch(`${network.serverip}/recommend-products`, requestOptions) //API call
+    fetch(`${network.serverIP}/recommend-products`, requestOptions) //API call
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -130,13 +118,12 @@ const HomeScreen = ({ navigation, route }) => {
   //method call on pull refresh
   const handleOnRefresh = () => {
     setRefreshing(true);
-    fetchProduct();
+    fetchRecommendProducts();
     setRefreshing(false);
   };
 
   //convert user to json and fetch products in initial render
   useEffect(() => {
-    convertToJSON(user);
     fetchProduct();
     fetchCategories();
     fetchRecommendProducts();
@@ -149,7 +136,7 @@ const HomeScreen = ({ navigation, route }) => {
         <TouchableOpacity disabled>
           <Ionicons name="menu" size={30} color={colors.muted} />
         </TouchableOpacity>
-        <View style={styles.topbarlogoContainer}>
+        <View style={styles.topBarLogoContainer}>
           <Image source={easybuylogo} style={styles.logo} />
           <Text style={styles.toBarText}>Fashionify</Text>
         </View>
@@ -157,9 +144,9 @@ const HomeScreen = ({ navigation, route }) => {
           style={styles.cartIconContainer}
           onPress={() => navigation.navigate("cart")}
         >
-          {cartproduct.length > 0 ? (
+          {cartProduct.length > 0 ? (
             <View style={styles.cartItemCountContainer}>
-              <Text style={styles.cartItemCountText}>{cartproduct.length}</Text>
+              <Text style={styles.cartItemCountText}>{cartProduct.length}</Text>
             </View>
           ) : (
             <></>
@@ -218,7 +205,7 @@ const HomeScreen = ({ navigation, route }) => {
           </View>
         </View>
         <ScrollView nestedScrollEnabled={true}>
-          <View style={styles.promotiomSliderContainer}>
+          <View style={styles.promotionSliderContainer}>
             <SliderBox
               images={slides}
               sliderBoxHeight={140}
@@ -256,7 +243,7 @@ const HomeScreen = ({ navigation, route }) => {
           <View style={styles.primaryTextContainer}>
             <Text style={styles.primaryText}>For you</Text>
           </View>
-          {products.length === 0 ? (
+          {recommendProduct.length === 0 ? (
             <View style={styles.productCardContainerEmpty}>
               <Text style={styles.productCardContainerEmptyText}>
                 No Product
@@ -324,7 +311,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
   },
-  topbarlogoContainer: {
+  topBarLogoContainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -332,8 +319,6 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     width: "100%",
-    flexDirecion: "row",
-
     paddingBottom: 0,
     flex: 1,
   },
@@ -408,7 +393,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
   },
-  promotiomSliderContainer: {
+  promotionSliderContainer: {
     marginVertical: 5,
     height: 140,
     backgroundColor: colors.light,

@@ -23,9 +23,9 @@ const DashboardScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(authUser);
   const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [refeshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   //method to remove the auth user from async storage and navigate the login if token expires
   const logout = async () => {
@@ -44,7 +44,7 @@ const DashboardScreen = ({ navigation, route }) => {
 
   //method the fetch the statistics from server using API call
   const fetchStats = () => {
-    fetch(`${network.serverip}/dashboard`, requestOptions)
+    fetch(`${network.serverIP}/dashboard`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success == true) {
@@ -55,7 +55,7 @@ const DashboardScreen = ({ navigation, route }) => {
               title: "Users",
               value: result.data?.usersCount,
               iconName: "person",
-              type: "parimary",
+              type: "primary",
               screenName: "viewusers",
             },
             {
@@ -84,20 +84,20 @@ const DashboardScreen = ({ navigation, route }) => {
             },
           ]);
           setError("");
-          setIsloading(false);
+          setIsLoading(false);
         } else {
           console.log(result.err);
           if (result.err == "jwt expired") {
             logout();
           }
           setError(result.message);
-          setIsloading(false);
+          setIsLoading(false);
         }
       })
       .catch((error) => {
         setError(error.message);
         console.log("error", error);
-        setIsloading(false);
+        setIsLoading(false);
       });
   };
 
@@ -117,7 +117,7 @@ const DashboardScreen = ({ navigation, route }) => {
     <InternetConnectionAlert onChange={(connectionState) => {}}>
       <View style={styles.container}>
         <StatusBar></StatusBar>
-        <ProgressDialog visible={isloading} label={label} />
+        <ProgressDialog visible={isLoading} label={label} />
         <View style={styles.topBarContainer}>
           <TouchableOpacity
             onPress={async () => {
@@ -147,7 +147,7 @@ const DashboardScreen = ({ navigation, route }) => {
             <ScrollView
               refreshControl={
                 <RefreshControl
-                  refreshing={refeshing}
+                  refreshing={refreshing}
                   onRefresh={handleOnRefresh}
                 />
               }
@@ -230,7 +230,6 @@ export default DashboardScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",

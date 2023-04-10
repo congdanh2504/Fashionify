@@ -20,8 +20,8 @@ const ViewUsersScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
   const { authUser } = route.params;
   const [user, setUser] = useState({});
-  const [isloading, setIsloading] = useState(false);
-  const [refeshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
   const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
@@ -50,8 +50,8 @@ const ViewUsersScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    setIsloading(true);
-    fetch(`${network.serverip}/admin/users`, requestOptions)
+    setIsLoading(true);
+    fetch(`${network.serverIP}/admin/users`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -61,10 +61,10 @@ const ViewUsersScreen = ({ navigation, route }) => {
         } else {
           setError(result.message);
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -104,7 +104,7 @@ const ViewUsersScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -141,7 +141,7 @@ const ViewUsersScreen = ({ navigation, route }) => {
         style={{ flex: 1, width: "100%" }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
         }
       >
         {foundItems && foundItems.length == 0 ? (
@@ -165,7 +165,7 @@ export default ViewUsersScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

@@ -56,7 +56,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    fetch(`${network.serverip}/wishlist`, requestOptions)
+    fetch(`${network.serverIP}/wishlist`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result?.err === "jwt expired") {
@@ -114,7 +114,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
       //API call to remove a item in wishlish
       fetch(
-        `${network.serverip}/remove-from-wishlist?id=${product?._id}`,
+        `${network.serverIP}/remove-from-wishlist?id=${product?._id}`,
         requestOptions
       )
         .then((response) => response.json())
@@ -155,7 +155,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
       console.log(addrequestOptions);
 
       //API call to add a item in wishlish
-      fetch(`${network.serverip}/add-to-wishlist`, addrequestOptions)
+      fetch(`${network.serverIP}/add-to-wishlist`, addrequestOptions)
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
@@ -305,7 +305,7 @@ export default ProductDetailScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "flex-start",
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 2,
     backgroundColor: colors.light,
-    flexDirecion: "row",
+    
     alignItems: "center",
     justifyContent: "flex-end",
     padding: 0,

@@ -64,7 +64,7 @@ const SignupScreen = ({ navigation }) => {
     if (password != confirmPassword) {
       return setError("password does not match");
     }
-    fetch(network.serverip + "/register", requestOptions) // API call
+    fetch(network.serverIP + "/register", requestOptions) // API call
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
@@ -165,7 +165,7 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
   logo: {

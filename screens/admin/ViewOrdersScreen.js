@@ -18,8 +18,8 @@ import OrderList from "../../components/OrderList/OrderList";
 const ViewOrdersScreen = ({ navigation, route }) => {
   const { authUser } = route.params;
   const [user, setUser] = useState({});
-  const [isloading, setIsloading] = useState(false);
-  const [refeshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
   const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
@@ -63,8 +63,8 @@ const ViewOrdersScreen = ({ navigation, route }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    setIsloading(true);
-    fetch(`${network.serverip}/admin/orders`, requestOptions)
+    setIsLoading(true);
+    fetch(`${network.serverIP}/admin/orders`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         if (result.success) {
@@ -74,10 +74,10 @@ const ViewOrdersScreen = ({ navigation, route }) => {
         } else {
           setError(result.message);
         }
-        setIsloading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         setError(error.message);
         console.log("error", error);
       });
@@ -107,7 +107,7 @@ const ViewOrdersScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -141,7 +141,7 @@ const ViewOrdersScreen = ({ navigation, route }) => {
         style={{ flex: 1, width: "100%", padding: 2 }}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refeshing} onRefresh={handleOnRefresh} />
+          <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
         }
       >
         {foundItems && foundItems.length == 0 ? (
@@ -166,7 +166,7 @@ export default ViewOrdersScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

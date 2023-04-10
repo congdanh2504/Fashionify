@@ -17,11 +17,10 @@ import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import * as ImagePicker from "expo-image-picker";
 import ProgressDialog from "react-native-progress-dialog";
 import { AntDesign } from "@expo/vector-icons";
-// import { network } from "../../constants";
 
 const AddCategoryScreen = ({ navigation, route }) => {
   const { authUser } = route.params; //authUser data
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [imageURL, setImageURL] = useState("");
@@ -71,7 +70,7 @@ const AddCategoryScreen = ({ navigation, route }) => {
     };
 
     fetch(
-      `http://10.0.2.2:3000/photos/upload`,
+      `${network.serverIP}/photos/upload`,
       ImageRequestOptions
     )
       .then((response) => response.json())
@@ -100,24 +99,24 @@ const AddCategoryScreen = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    setIsloading(true);
+    setIsLoading(true);
     //[check validation] -- Start
     if (title == "") {
       setError("Please enter the product title");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (description == "") {
       setError("Please upload the product image");
-      setIsloading(false);
+      setIsLoading(false);
     } else if (imageURL == "") {
       setError("Please upload the Catergory image");
-      setIsloading(false);
+      setIsLoading(false);
     } else {
       //[check validation] -- End
-      fetch(network.serverip + "/category", requestOptions) //API call
+      fetch(network.serverIP + "/category", requestOptions) //API call
         .then((response) => response.json())
         .then((result) => {
           if (result.success == true) {
-            setIsloading(false);
+            setIsLoading(false);
             setAlertType("success");
             setError(result.message);
             setTitle("");
@@ -125,7 +124,7 @@ const AddCategoryScreen = ({ navigation, route }) => {
           }
         })
         .catch((error) => {
-          setIsloading(false);
+          setIsLoading(false);
           setError(error.message);
           setAlertType("error");
           console.log("error", error);
@@ -136,7 +135,7 @@ const AddCategoryScreen = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <StatusBar></StatusBar>
-      <ProgressDialog visible={isloading} label={"Adding ..."} />
+      <ProgressDialog visible={isLoading} label={"Adding ..."} />
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
           onPress={() => {
@@ -208,7 +207,7 @@ export default AddCategoryScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
 

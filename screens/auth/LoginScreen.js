@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //method to store the authUser to aync storage
   _storeData = async (user) => {
@@ -51,34 +51,34 @@ const LoginScreen = ({ navigation }) => {
 
   //method to validate the user credentials and navigate to Home Screen / Dashboard
   const loginHandle = () => {
-    setIsloading(true);
+    setIsLoading(true);
     //[check validation] -- Start
     // if email does not contain @ sign
     if (email == "") {
-      setIsloading(false);
+      setIsLoading(false);
       return setError("Please enter your email");
     }
     if (password == "") {
-      setIsloading(false);
+      setIsLoading(false);
       return setError("Please enter your password");
     }
     if (!email.includes("@")) {
-      setIsloading(false);
+      setIsLoading(false);
       return setError("Email is not valid");
     }
     // length of email must be greater than 5 characters
     if (email.length < 6) {
-      setIsloading(false);
+      setIsLoading(false);
       return setError("Email is too short");
     }
     // length of password must be greater than 5 characters
     if (password.length < 6) {
-      setIsloading(false);
+      setIsLoading(false);
       return setError("Password must be 6 characters long");
     }
     //[check validation] -- End
 
-    fetch(network.serverip + "/login", requestOptions) // API call
+    fetch(network.serverIP + "/login", requestOptions) // API call
       .then((response) => response.json())
       .then((result) => {
         if (
@@ -88,20 +88,20 @@ const LoginScreen = ({ navigation }) => {
           if (result?.data?.userType == "ADMIN") {
             //check the user type if the type is ADMIN then navigate to Dashboard else navigate to User Home
             _storeData(result.data);
-            setIsloading(false);
+            setIsLoading(false);
             navigation.replace("dashboard", { authUser: result.data }); // naviagte to Admin Dashboard
           } else {
             _storeData(result.data);
-            setIsloading(false);
+            setIsLoading(false);
             navigation.replace("tab", { user: result.data }); // naviagte to User Dashboard
           }
         } else {
-          setIsloading(false);
+          setIsLoading(false);
           return setError(result.message);
         }
       })
       .catch((error) => {
-        setIsloading(false);
+        setIsLoading(false);
         console.log("error", setError(error.message));
       });
   };
@@ -113,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
         style={styles.container}
       >
         <ScrollView style={{ flex: 1, width: "100%" }}>
-          <ProgressDialog visible={isloading} label={"Login ..."} />
+          <ProgressDialog visible={isLoading} label={"Login ..."} />
           <StatusBar></StatusBar>
           <View style={styles.welconeContainer}>
             <View>
@@ -178,7 +178,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     width: "100%",
-    flexDirecion: "row",
+    
     padding: 5,
   },
   logo: {

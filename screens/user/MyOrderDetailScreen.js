@@ -16,7 +16,7 @@ import StepIndicator from "react-native-step-indicator";
 
 const MyOrderDetailScreen = ({ navigation, route }) => {
   const { orderDetail } = route.params;
-  const [isloading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState("Loading..");
   const [error, setError] = useState("");
   const [alertType, setAlertType] = useState("error");
@@ -111,7 +111,7 @@ const MyOrderDetailScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isloading} label={label} />
+      <ProgressDialog visible={isLoading} label={label} />
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -224,7 +224,7 @@ export default MyOrderDetailScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirecion: "row",
+    
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
