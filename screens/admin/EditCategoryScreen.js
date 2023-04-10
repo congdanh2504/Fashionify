@@ -22,11 +22,10 @@ const EditCategoryScreen = ({ navigation, route }) => {
   const { category, authUser } = route.params;
   const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState();
+  const [imageURL, setImageURL] = useState(category.image);
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [alertType, setAlertType] = useState("error");
-  const [user, setUser] = useState({});
 
   //Method to post the data to server to edit the category using API call
   const editCategoryHandle = (id) => {
@@ -36,7 +35,7 @@ const EditCategoryScreen = ({ navigation, route }) => {
 
     var raw = JSON.stringify({
       title: title,
-      image: image,
+      image: imageURL,
       description: description,
     });
 
@@ -54,9 +53,6 @@ const EditCategoryScreen = ({ navigation, route }) => {
       setIsLoading(false);
     } else if (description == "") {
       setError("Please upload the product image");
-      setIsLoading(false);
-    } else if (image == null) {
-      setError("Please upload the Catergory image");
       setIsLoading(false);
     } else {
       //[check validations] -- End
@@ -78,6 +74,44 @@ const EditCategoryScreen = ({ navigation, route }) => {
           console.log("error", error);
         });
     }
+  };
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
+
+    if (!result.canceled) {
+      upload(result.uri);
+    }
+  };
+
+  const upload = async (imageUpload) => {
+    var formdata = new FormData();
+    formdata.append("filename", {
+      uri: imageUpload,
+      name: 'test.jpg',
+      type: 'image/jpeg'
+    });
+
+    var ImageRequestOptions = {
+      method: "POST",
+      body: formdata,
+    };
+
+    fetch(
+      `${network.serverIP}/photos/upload`,
+      ImageRequestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setImageURL(result.downloadURL)
+      })
+      .catch((error) => console.log("error", error));
   };
 
   //inilize the title and description input fields on initial render
@@ -118,6 +152,14 @@ const EditCategoryScreen = ({ navigation, route }) => {
         style={{ flex: 1, width: "100%" }}
       >
         <View style={styles.formContainer}>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
+              <Image
+                source={{ uri: imageURL }}
+                style={{ width: 200, height: 200 }}
+              />
+            </TouchableOpacity>
+          </View>
           <CustomInput
             value={title}
             setValue={setTitle}

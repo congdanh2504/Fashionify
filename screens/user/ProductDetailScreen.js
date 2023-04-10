@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 
 const ProductDetailScreen = ({ navigation, route }) => {
-  const { product } = route.params;
+  const [product, setProduct] = useState(route.params.product)
   const cartproduct = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -36,13 +36,35 @@ const ProductDetailScreen = ({ navigation, route }) => {
   };
 
   const [onWishlist, setOnWishlist] = useState(false);
-  const [avaiableQuantity, setAvaiableQuantity] = useState(0);
+  const [availableQuantity, setAvailableQuantity] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [productImage, SetProductImage] = useState(" ");
   const [wishlistItems, setWishlistItems] = useState([]);
   const [error, setError] = useState("");
   const [isDisable, setIsDisbale] = useState(true);
   const [alertType, setAlertType] = useState("error");
+
+  const fetchProduct = () => {
+    const headerOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    fetch(`${network.serverIP}/product/${product._id}`, headerOptions) //API call
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          setError("");
+          setProduct(result.data)
+          setAvailableQuantity(result.data.quantity);
+        } else {
+          setError(result.message);
+        }
+      })
+      .catch((error) => {
+        setError(error.message);
+        console.log("error", error);
+      });
+  };
 
   //method to fetch wishlist from server using API call
   const fetchWishlist = async () => {
@@ -84,7 +106,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
   //method to increase the product quantity
   const handleIncreaseButton = (quantity) => {
-    if (avaiableQuantity > quantity) {
+    if (availableQuantity > quantity) {
       setQuantity(quantity + 1);
     }
   };
@@ -158,7 +180,6 @@ const ProductDetailScreen = ({ navigation, route }) => {
       fetch(`${network.serverIP}/add-to-wishlist`, addrequestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
           if (result.success) {
             setError(result.message);
             setAlertType("success");
@@ -180,8 +201,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
   //set quantity, avaiableQuantity, product image and fetch wishlist on initial render
   useEffect(() => {
+    fetchProduct();
     setQuantity(0);
-    setAvaiableQuantity(product.quantity);
     SetProductImage(product?.image);
     fetchWishlist();
   }, []);
@@ -247,7 +268,8 @@ const ProductDetailScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.productDetailContainer}>
               <View style={styles.productSizeOptionContainer}>
-                {/* <Text style={styles.secondaryTextSm}>Size:</Text> */}
+                <Text style={styles.secondaryTextSm}>Quantity:</Text>
+                <Text style={styles.primaryTextSm}>{product?.quantity}</Text>
               </View>
               <View style={styles.productPriceContainer}>
                 <Text style={styles.secondaryTextSm}>Price:</Text>
@@ -282,7 +304,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
               </View>
             </View>
             <View style={styles.productButtonContainer}>
-              {avaiableQuantity > 0 ? (
+              {availableQuantity > 0 ? (
                 <CustomButton
                   text={"Add to Cart"}
                   onPress={() => {

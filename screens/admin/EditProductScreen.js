@@ -25,11 +25,10 @@ const EditProductScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [sku, setSku] = useState("");
-  const [image, setImage] = useState("");
+  const [imageURL, setImageURL] = useState(product.image);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("garments");
   const [alertType, setAlertType] = useState("error");
 
   var myHeaders = new Headers();
@@ -40,9 +39,8 @@ const EditProductScreen = ({ navigation, route }) => {
     title: title,
     sku: sku,
     price: price,
-    image: image,
+    image: imageURL,
     description: description,
-    category: category,
     quantity: quantity,
   });
 
@@ -63,8 +61,33 @@ const EditProductScreen = ({ navigation, route }) => {
       quality: 0.5,
     });
     if (!result.cancelled) {
-      setImage(result.uri);
+      upload(result.uri);
     }
+  };
+
+  const upload = async (imageUpload) => {
+    var formdata = new FormData();
+    formdata.append("filename", {
+      uri: imageUpload,
+      name: 'test.jpg',
+      type: 'image/jpeg'
+    });
+
+    var ImageRequestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch(
+      `${network.serverIP}/photos/upload`,
+      ImageRequestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        setImageURL(result.downloadURL)
+      })
+      .catch((error) => console.log("error", error));
   };
 
   //Method for imput validation and post data to server to edit product using API call
@@ -78,9 +101,6 @@ const EditProductScreen = ({ navigation, route }) => {
       setIsLoading(false);
     } else if (quantity <= 0) {
       setError("Quantity must be greater then 1");
-      setIsLoading(false);
-    } else if (image == null) {
-      setError("Please upload the product image");
       setIsLoading(false);
     } else {
       fetch(
@@ -108,7 +128,6 @@ const EditProductScreen = ({ navigation, route }) => {
 
   // set all the input fields and image on initial render
   useEffect(() => {
-    setImage(`${network.serverIP}/uploads/${product?.image}`);
     setTitle(product.title);
     setSku(product.sku);
     setQuantity(product.quantity.toString());
@@ -146,18 +165,12 @@ const EditProductScreen = ({ navigation, route }) => {
       <ScrollView style={{ flex: 1, width: "100%" }}>
         <View style={styles.formContainer}>
           <View style={styles.imageContainer}>
-            {image ? (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 200, height: 200 }}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
-                <AntDesign name="pluscircle" size={50} color={colors.muted} />
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity style={styles.imageHolder} onPress={pickImage}>
+              <Image
+                source={{ uri: imageURL }}
+                style={{ width: 200, height: 200 }}
+              />
+            </TouchableOpacity>
           </View>
           <CustomInput
             value={sku}

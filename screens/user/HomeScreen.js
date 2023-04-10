@@ -158,7 +158,7 @@ const HomeScreen = ({ navigation, route }) => {
         <View style={styles.searchContainer}>
           <View style={styles.inputContainer}>
             <SearchableDropdown
-              onTextChange={(text) => console.log(text)}
+              onTextChange={(text) => {}}
               onItemSelect={(item) => handleProductPress(item)}
               defaultIndex={0}
               containerStyle={{
@@ -166,7 +166,7 @@ const HomeScreen = ({ navigation, route }) => {
                 width: "100%",
                 elevation: 5,
                 position: "absolute",
-                zIndex: 20,
+                zIndex: 200,
                 top: -20,
                 maxHeight: 300,
                 backgroundColor: colors.light,
@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   bodyContainer: {
+    position: "relative",
     width: "100%",
     paddingBottom: 0,
     flex: 1,
