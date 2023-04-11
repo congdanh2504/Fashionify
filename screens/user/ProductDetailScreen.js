@@ -283,6 +283,17 @@ const ProductDetailScreen = ({ navigation, route }) => {
               <Text style={styles.secondaryTextSm}>Description:</Text>
               <Text>{product?.description}</Text>
             </View>
+            <TouchableOpacity
+              style={styles.productReviewsContainer}
+              onPress={() => {navigation.navigate("reviewproduct", {product: product})}}
+            >
+              <Text style={styles.secondaryTextSm}>Reviews</Text>
+              <Ionicons
+                name="ellipsis-horizontal-circle-outline"
+                size={30}
+                color={colors.primary}
+              /> 
+            </TouchableOpacity>
           </View>
           <View style={styles.productInfoBottomContainer}>
             <View style={styles.counterContainer}>
@@ -430,7 +441,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   infoButtonContainer: {
-    padding: 5,
     position: "absolute",
     paddingRight: 0,
     display: "flex",
@@ -440,8 +450,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   wishlistButtonContainer: {
-    height: 50,
-    width: 80,
+    marginRight: 20,
+    height: 40,
+    width: 40,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -472,6 +483,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   productReviewsContainer: {
+    marginTop: 20,
     display: "flex",
     width: "100%",
     flexDirection: "column",

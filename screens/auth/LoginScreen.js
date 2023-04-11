@@ -177,8 +177,7 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    
+    width: "100%",  
     backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
@@ -191,8 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    height: "30%",
-    // padding:15
+    height: "30%"
   },
   formContainer: {
     flex: 3,
