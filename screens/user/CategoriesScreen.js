@@ -12,7 +12,6 @@ import {
 import React, { useState, useEffect } from "react";
 
 import { Ionicons } from "@expo/vector-icons";
-import cartIcon from "../../assets/icons/cart_beg.png";
 import emptyBox from "../../assets/image/emptybox.png";
 import { colors, network } from "../../constants";
 import { useSelector, useDispatch } from "react-redux";
@@ -162,7 +161,11 @@ const CategoriesScreen = ({ navigation, route }) => {
           ) : (
             <></>
           )}
-          <Image source={cartIcon} />
+          <Ionicons
+            name="albums-outline"
+            size={30}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import cartIcon from "../../assets/icons/cart_beg.png";
 import scanIcon from "../../assets/icons/scan_icons.png";
 import easybuylogo from "../../assets/logo/logo.png";
 import { colors } from "../../constants";
@@ -151,7 +150,11 @@ const HomeScreen = ({ navigation, route }) => {
           ) : (
             <></>
           )}
-          <Image source={cartIcon} />
+          <Ionicons
+            name="albums-outline"
+            size={30}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
