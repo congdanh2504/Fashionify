@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import cartIcon from "../../assets/icons/cart_beg.png";
 import { colors, network } from "../../constants";
 import CustomButton from "../../components/CustomButton";
 import { useSelector, useDispatch } from "react-redux";
@@ -238,33 +237,37 @@ const ProductDetailScreen = ({ navigation, route }) => {
           ) : (
             <></>
           )}
-          <Image source={cartIcon} />
+          <Ionicons
+            name="albums-outline"
+            size={30}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
       <View style={styles.bodyContainer}>
         <View style={styles.productImageContainer}>
           <Image source={{ uri: productImage }} style={styles.productImage} />
         </View>
+        <View style={styles.infoButtonContainer}>
+            <View style={styles.wishlistButtonContainer}>
+              <TouchableOpacity
+                disabled={isDisable}
+                style={styles.iconContainer}
+                onPress={() => handleWishlistBtn()}
+              >
+                {onWishlist == false ? (
+                  <Ionicons name="heart" size={25} color={colors.muted} />
+                ) : (
+                  <Ionicons name="heart" size={25} color={colors.danger} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
         <CustomAlert message={error} type={alertType} />
         <View style={styles.productInfoContainer}>
           <View style={styles.productInfoTopContainer}>
             <View style={styles.productNameContaier}>
               <Text style={styles.productNameText}>{product?.title}</Text>
-            </View>
-            <View style={styles.infoButtonContainer}>
-              <View style={styles.wishlistButtonContainer}>
-                <TouchableOpacity
-                  disabled={isDisable}
-                  style={styles.iconContainer}
-                  onPress={() => handleWishlistBtn()}
-                >
-                  {onWishlist == false ? (
-                    <Ionicons name="heart" size={25} color={colors.muted} />
-                  ) : (
-                    <Ionicons name="heart" size={25} color={colors.danger} />
-                  )}
-                </TouchableOpacity>
-              </View>
             </View>
             <View style={styles.productDetailContainer}>
               <View style={styles.productSizeOptionContainer}>
@@ -428,6 +431,7 @@ const styles = StyleSheet.create({
   },
   infoButtonContainer: {
     padding: 5,
+    position: "absolute",
     paddingRight: 0,
     display: "flex",
     width: "100%",
@@ -459,6 +463,15 @@ const styles = StyleSheet.create({
   secondaryTextSm: { fontSize: 15, fontWeight: "bold" },
   primaryTextSm: { color: colors.primary, fontSize: 15, fontWeight: "bold" },
   productDescriptionContainer: {
+    display: "flex",
+    width: "100%",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  productReviewsContainer: {
     display: "flex",
     width: "100%",
     flexDirection: "column",

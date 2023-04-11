@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import cartIcon from "../../assets/icons/cart_beg_active.png";
 import { colors, network } from "../../constants";
 import CartProductList from "../../components/CartProductList/CartProductList";
 import CustomButton from "../../components/CustomButton";
@@ -81,7 +80,11 @@ const CartScreen = ({ navigation }) => {
 
         <View></View>
         <TouchableOpacity>
-          <Image source={cartIcon} />
+          <Ionicons
+            name="albums-outline"
+            size={30}
+            color={colors.primary}
+          />
         </TouchableOpacity>
       </View>
       {cartproduct.length === 0 ? (

@@ -165,7 +165,7 @@ const LoginScreen = ({ navigation }) => {
             onPress={() => navigation.navigate("signup")}
             style={styles.signupText}
           >
-            signup
+            Signup
           </Text>
         </View>
       </KeyboardAvoidingView>
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   welcomeParagraph: {
     fontSize: 15,
     fontWeight: "500",
-    color: colors.primary_shadow,
+    color: colors.primary,
   },
   forgetPasswordContainer: {
     marginTop: 10,

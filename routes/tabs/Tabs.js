@@ -5,10 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../../screens/user/HomeScreen";
 import { colors } from "../../constants";
 import UserProfileScreen from "../../screens/profile/UserProfileScreen";
-import HomeIconActive from "../../assets/icons/bar_home_icon_active.png";
-import HomeIcon from "../../assets/icons/bar_home_icon.png";
-import userIcon from "../../assets/icons/bar_profile_icon.png";
-import userIconActive from "../../assets/icons/bar_profile_icon_active.png";
 import MyOrderScreen from "../../screens/user/MyOrderScreen";
 import CategoriesScreen from "../../screens/user/CategoriesScreen";
 
@@ -36,12 +32,17 @@ const Tabs = ({ navigation, route }) => {
             return (
               <TouchableOpacity disabled>
                 {focused == true ? (
-                  <Image
-                    source={HomeIconActive}
-                    style={StyleSheet.tabIconStyle}
+                  <Ionicons
+                    name="home-outline"
+                    size={29}
+                    color={colors.primary}
                   />
                 ) : (
-                  <Image source={HomeIcon} style={StyleSheet.tabIconStyle} />
+                  <Ionicons
+                    name="home-outline"
+                    size={29}
+                    color={colors.muted}
+                  />
                 )}
               </TouchableOpacity>
             );
@@ -85,12 +86,17 @@ const Tabs = ({ navigation, route }) => {
             return (
               <TouchableOpacity disabled>
                 {focused == true ? (
-                  <Image
-                    source={userIconActive}
-                    style={StyleSheet.tabIconStyle}
+                  <Ionicons
+                    name="person-outline"
+                    size={29}
+                    color={colors.primary}
                   />
                 ) : (
-                  <Image source={userIcon} style={StyleSheet.tabIconStyle} />
+                  <Ionicons
+                    name="person-outline"
+                    size={29}
+                    color={colors.muted}
+                  />
                 )}
               </TouchableOpacity>
             );
