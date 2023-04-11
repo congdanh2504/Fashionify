@@ -2,60 +2,68 @@ import { StyleSheet, Image, View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "../../constants";
+import { PureComponent } from "react";
 
-const ProductList = ({
-  category,
-  price,
-  title,
-  image,
-  qantity,
-  onPressView,
-  onPressEdit,
-  onPressDelete,
-}) => {
-  return (
-    <TouchableOpacity style={styles.container} onPress={onPressView}>
-      <View style={styles.innerContainer}>
-        <View>
-          {image != null ? (
-            <Image source={{ uri: image }} style={styles.productImage} />
-          ) : (
-            <View style={styles.ImageContainer}></View>
-          )}
-        </View>
-        <View style={styles.productInfoContainer}>
-          <Text style={styles.productTitle}>{title}</Text>
-          <View style={styles.productInfoItem}>
-            <Text style={styles.productInfoItemText}>Category: </Text>
-            <Text>{category}</Text>
+class ProductList extends PureComponent {
+
+  render() {
+    return (
+      <TouchableOpacity style={styles.container} onPress={this.props.onPressView}>
+        <View style={styles.innerContainer}>
+          <View>
+            {this.props.image != null ? (
+              <Image source={{ uri: this.props.image }} style={styles.productImage} />
+            ) : (
+              <View style={styles.ImageContainer}></View>
+            )}
           </View>
-          <View style={styles.productInfoItem}>
-            <Text style={styles.productInfoItemText}>Price: </Text>
-            <Text>{price}</Text>
-          </View>
-          <View style={styles.productInfoItem}>
-            <Text style={styles.productInfoItemText}>SKU: </Text>
-            <Text>{qantity <= 0 ? "Out of Stock" : qantity}</Text>
+          <View style={styles.productInfoContainer}>
+            <Text style={styles.productTitle}>{this.props.title}</Text>
+            <View style={styles.productInfoItem}>
+              <Text style={styles.productInfoItemText}>Category: </Text>
+              <Text>{this.props.category}</Text>
+            </View>
+            <View style={styles.productInfoItem}>
+              <Text style={styles.productInfoItemText}>Price: </Text>
+              <Text>{this.props.price}</Text>
+            </View>
+            <View style={styles.productInfoItem}>
+              <Text style={styles.productInfoItemText}>SKU: </Text>
+              <Text>{this.props.qantity <= 0 ? "Out of Stock" : this.props.qantity}</Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.primary }]}
-          onPress={onPressEdit}
-        >
-          <MaterialIcons name={"edit"} size={15} color={colors.white} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: colors.danger }]}
-          onPress={onPressDelete}
-        >
-          <MaterialIcons name={"delete"} size={15} color={colors.white} />
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  );
-};
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.actionButton, { backgroundColor: colors.primary }]}
+            onPress={this.props.onPressEdit}
+          >
+            <MaterialIcons name={"edit"} size={15} color={colors.white} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.actionButton, { backgroundColor: colors.danger }]}
+            onPress={this.props.onPressDelete}
+          >
+            <MaterialIcons name={"delete"} size={15} color={colors.white} />
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
+// const ProductList = ({
+//   category,
+//   price,
+//   title,
+//   image,
+//   qantity,
+//   onPressView,
+//   onPressEdit,
+//   onPressDelete,
+// }) => {
+  
+// };
 
 export default ProductList;
 

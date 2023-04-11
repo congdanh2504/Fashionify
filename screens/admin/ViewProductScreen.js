@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors, network } from "../../constants";
@@ -15,17 +16,19 @@ import { AntDesign } from "@expo/vector-icons";
 import ProductList from "../../components/ProductList/ProductList";
 import CustomAlert from "../../components/CustomAlert/CustomAlert";
 import CustomInput from "../../components/CustomInput/";
+import debounce from 'lodash/debounce';
 import ProgressDialog from "react-native-progress-dialog";
 
 const ViewProductScreen = ({ navigation, route }) => {
   const { authUser } = route.params;
+  const [products, setProducts] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [alertType, setAlertType] = useState("error");
 
-  const [label, setLabel] = useState("Loading...");
   const [error, setError] = useState("");
-  const [products, setProducts] = useState([]);
   const [foundItems, setFoundItems] = useState([]);
   const [filterItem, setFilterItem] = useState("");
 
@@ -38,10 +41,6 @@ const ViewProductScreen = ({ navigation, route }) => {
     redirect: "follow",
   };
 
-  var ProductListRequestOptions = {
-    method: "GET",
-    redirect: "follow",
-  };
 
   //method call on pull refresh
   const handleOnRefresh = () => {
@@ -94,54 +93,87 @@ const ViewProductScreen = ({ navigation, route }) => {
   };
 
   //method the fetch the product data from server using API call
-  const fetchProduct = () => {
-    setIsLoading(true);
-    fetch(`${network.serverIP}/products`, ProductListRequestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.success) {
-          setProducts(result.data);
-          setFoundItems(result.data);
-          setError("");
-          setIsLoading(false);
-        } else {
-          setError(result.message);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        setError(error.message);
-        console.log("error", error);
-        setIsLoading(false);
-      });
-  };
+  // const fetchProduct = () => {
+  //   setIsLoading(true);
+  //   fetch(`${network.serverIP}/products`, ProductListRequestOptions)
+  //     .then((response) => response.json())
+  //     .then((result) => {
+  //       if (result.success) {
+  //         setProducts(result.data);
+  //         setFoundItems(result.data);
+  //         setError("");
+  //         setIsLoading(false);
+  //       } else {
+  //         setError(result.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setError(error.message);
+  //       console.log("error", error);
+  //       setIsLoading(false);
+  //     });
+  // };
 
-  //method to filer the orders for by title [search bar]
-  const filter = () => {
-    const keyword = filterItem;
-    if (keyword !== "") {
-      const results = products?.filter((product) => {
-        return product?.title.toLowerCase().includes(keyword.toLowerCase());
-      });
-      setFoundItems(results);
-    } else {
-      setFoundItems(products);
+  useEffect(() => {
+    const loadProducts = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await fetch(
+          `${network.serverIP}/products-paginate?page=${currentPage}&limit=10`
+        );
+        const data = await response.json();
+        setProducts(products => [...products, ...data.products]);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error(error);
+      }
+
+      setIsLoading(false);
+    };
+    loadProducts();
+  }, [currentPage]);
+
+  //filter the data whenever filteritem value change
+  // useEffect(() => {
+  //   filter();
+  // }, [filterItem]);
+
+  //fetch the categories on initial render
+  // useEffect(() => {
+  //   fetchProduct();
+  // }, []);
+
+  const handleLoadMore = () => {
+    if (isLoading) return;
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
-  //filter the data whenever filteritem value change
-  useEffect(() => {
-    filter();
-  }, [filterItem]);
-
-  //fetch the categories on initial render
-  useEffect(() => {
-    fetchProduct();
-  }, []);
+  const debouncedSearch = debounce((text) => {
+    if (text == "") setFoundItems([])
+    else {
+      fetch(`${network.serverIP}/products?search=${text}`, requestOptions) //API call
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.success) {
+            setFoundItems(result.data)
+          } else {
+            setError(result.message);
+          }
+        })
+        .catch((error) => {
+          setError(error.message);
+          console.log("error", error);
+        });
+    }
+  }, 1000);
 
   return (
     <View style={styles.container}>
-      <ProgressDialog visible={isLoading} label={label} />
+      {/* <ProgressDialog visible={isLoading} label={label} /> */}
       <StatusBar></StatusBar>
       <View style={styles.TopBarContainer}>
         <TouchableOpacity
@@ -176,44 +208,82 @@ const ViewProductScreen = ({ navigation, route }) => {
         radius={5}
         placeholder={"Search..."}
         value={filterItem}
-        setValue={setFilterItem}
+        setValue={(value) => {
+          setFilterItem(value)
+          debouncedSearch(value)
+        }}
       />
-      <ScrollView
+      <View
         style={{ flex: 1, width: "100%" }}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={handleOnRefresh} />
-        }
       >
-        {foundItems && foundItems.length == 0 ? (
-          <Text>{`No product found with the name of ${filterItem}!`}</Text>
-        ) : (
-          foundItems.map((product, index) => {
-            return (
+        {
+          (foundItems && foundItems.length > 0) ? 
+          <FlatList 
+            data={foundItems}
+            initialNumToRender={10}
+            renderItem={ ({item}) => 
               <ProductList
-                key={index}
-                image={product?.image}
-                title={product?.title}
-                category={product?.category?.title}
-                price={product?.price}
-                qantity={product?.sku}
+                key={item._id}
+                image={item?.image}
+                title={item?.title}
+                category={item?.category?.title}
+                price={item?.price}
+                qantity={item?.sku}
                 onPressView={() => {
-                  console.log("view is working " + product._id);
+                  console.log("view is working " + item._id);
                 }}
                 onPressEdit={() => {
                   navigation.navigate("editproduct", {
-                    product: product,
+                    product: item,
                     authUser: authUser,
                   });
                 }}
                 onPressDelete={() => {
-                  showConfirmDialog(product._id);
+                  showConfirmDialog(item._id);
                 }}
               />
-            );
-          })
-        )}
-      </ScrollView>
+            }
+          />
+          : products && products.length == 0 ? (
+            <Text>{`No product found!`}</Text>
+          ) : (
+            <FlatList 
+              data={products}
+              initialNumToRender={10}
+              renderItem={ ({item}) => 
+                <ProductList
+                  key={item._id}
+                  image={item?.image}
+                  title={item?.title}
+                  category={item?.category?.title}
+                  price={item?.price}
+                  qantity={item?.sku}
+                  onPressView={() => {
+                    console.log("view is working " + item._id);
+                  }}
+                  onPressEdit={() => {
+                    navigation.navigate("editproduct", {
+                      product: item,
+                      authUser: authUser,
+                    });
+                  }}
+                  onPressDelete={() => {
+                    showConfirmDialog(item._id);
+                  }}
+                />
+              }
+              onEndReached={handleLoadMore}
+              ListFooterComponent={
+                isLoading ? (
+                  <View>
+                    <Text>Loading...</Text>
+                  </View>
+                ) : null
+              }
+            />
+          )}
+        
+      </View>
     </View>
   );
 };
