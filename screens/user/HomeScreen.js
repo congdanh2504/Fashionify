@@ -192,11 +192,12 @@ const HomeScreen = ({ navigation, route }) => {
               }}
               itemsContainerStyle={{
                 maxHeight: "100%",
+                zIndex: 1001
               }}
               items={searchItems}
               placeholder="Search..."
               resetValue={false}
-              underlineColorAndroid="transparent"
+              // underlineColorAndroid="transparent"
             />
             {/* <CustomInput radius={5} placeholder={"Search...."} /> */}
           </View>
@@ -350,6 +351,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
+    position: 'absolute',
+    zIndex: 1001
   },
   inputContainer: {
     width: "70%",
@@ -398,8 +401,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   promotionSliderContainer: {
-    marginVertical: 5,
     height: 140,
+    marginTop: 80,
     backgroundColor: colors.light,
   },
   categoryContainer: {
